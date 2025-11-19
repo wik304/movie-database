@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Lis 16, 2025 at 08:16 PM
+-- Generation Time: Lis 19, 2025 at 04:59 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -24,36 +24,31 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Dumping data for table `movies`
+-- Struktura tabeli dla tabeli `achievements`
 --
 
-INSERT INTO `movies` (`id`, `title`, `description`, `poster_url`, `release_year`, `director`, `genre`, `popularity`, `created_at`) VALUES
-(1, 'Incepcja', 'Złodziej, który kradnie informacje, wchodząc do snów swoich ofiar, otrzymuje ostatnie zadanie: zaszczepić myśl w umyśle celu.', 'uploads/posters/inception.jpg', 2010, 'Christopher Nolan', 'Sci-Fi', 14.00, '2025-10-28 15:39:34'),
-(2, 'Diuna: Część druga', 'Paul Atryda jednoczy się z Chani i Fremenami, szukając zemsty na spiskowcach, którzy zniszczyli jego rodzinę.', 'uploads/posters/dune-part-two.jpg', 2024, 'Denis Villeneuve', 'Sci-Fi', 1.00, '2025-10-28 15:39:34'),
-(3, 'Parasite', 'Czteroosobowa rodzina bezrobotnych postanawia odmienić swój los, wplątując się w życie zamożnej rodziny Parków.', 'uploads/posters/parasite.jpg', 2019, 'Bong Joon Ho', 'Thriller', 5.00, '2025-10-28 15:39:34'),
-(4, 'Joker', 'W Gotham City chory psychicznie komik Arthur Fleck zostaje zepchnięty na margines. Jego życie to ciąg niefortunnych zdarzeń, które prowadzą go na ścieżkę zbrodni.', 'uploads/posters/joker.jpg', 2019, 'Todd Phillips', 'Thriller', 5.00, '2025-10-28 15:39:34'),
-(5, 'Forrest Gump', 'Historia życia prostolinijnego Forresta Gumpa, który mimo niskiego ilorazu inteligencji bierze udział w najważniejszych wydarzeniach w historii USA.', 'uploads/posters/forrest-gump.jpg', 1994, 'Robert Zemeckis', 'Dramat', 3.00, '2025-10-28 15:39:34'),
-(6, 'Skazani na Shawshank', 'Adaptacja opowiadania Stephena Kinga. Niesłusznie skazany na dożywocie bankier, Andy Dufresne, stara się przetrwać w więzieniu, zachowując nadzieję.', 'uploads/posters/shawshank-redemption.jpg', 1994, 'Frank Darabont', 'Dramat', 0.00, '2025-10-28 15:39:34'),
-(7, 'Ojciec Chrzestny', 'Starzejący się patriarcha potężnej, nowojorskiej rodziny mafijnej, Vito Corleone, postanawia przekazać kontrolę nad swoim imperium. Kiedy jego najmłodszy syn, Michael, początkowo niechętny rodzinie, zostaje wciągnięty w brutalny świat przestępczości i zdrady, musi przejąć rolę ojca i stać się nowym, bezwzględnym Donem.', 'uploads/posters/godfather.jpg', 1972, 'Francis Ford Coppola', 'Dramat', 3.00, '2025-11-05 14:56:22'),
-(8, 'Pulp Fiction', 'Losy dwóch płatnych morderców, żony ich szefa, boksera, który miał przegrać walkę, oraz pary drobnych rabusiów splatają się w serii nieprzewidywalnych, pełnych czarnego humoru i przemocy zdarzeń. Film opowiada trzy pozornie oddzielne historie, które łączą się w nieliniowej narracji.', 'uploads/posters/pulpfiction.jpg', 1994, 'Quentin Tarantino', 'Dramat', 5.00, '2025-11-05 14:56:22'),
-(9, 'Mroczny Rycerz', 'Batman, z pomocą porucznika Gordona i prokuratora Harveya Denta, kontynuuje swoją misję oczyszczenia Gotham z przestępczości. Na ich drodze staje jednak nowy, genialny i anarchiczny złoczyńca znany jako Joker, który pogrąża miasto w chaosie i zmusza Mrocznego Rycerza do przekroczenia cienkiej granicy między bohaterem a mścicielem.', 'uploads/posters/darkknight.jpg', 2008, 'Christopher Nolan', 'Dramat', 2.00, '2025-11-05 14:56:22'),
-(10, 'Spirited Away: W krainie bogów', 'Dziesięcioletnia Chihiro, podczas przeprowadzki do nowego domu, trafia do magicznej krainy zamieszkanej przez duchy, bogów i potwory. Gdy jej rodzice zostają zamienieni w świnie przez potężną czarownicę Yubabę, dziewczynka musi podjąć pracę w niezwykłej łaźni dla bóstw, aby znaleźć sposób na uratowanie rodziny i powrót do świata ludzi.', 'uploads/posters/spiritedaway.jpg', 2001, 'Hayao Miyazaki', 'Animacja', 3.00, '2025-11-05 14:56:22'),
-(11, 'Dwunastu gniewnych ludzi', 'Dwunastu przysięgłych zbiera się w dusznym pokoju, aby zadecydować o winie lub niewinności młodego chłopaka oskarżonego o morderstwo ojca. Kiedy jedenastu z nich jest gotowych na szybki werdykt skazujący, jeden przysięgły (Juror nr 8) postanawia samotnie przeciwstawić się reszcie, argumentując, że sprawa wymaga głębszej analizy dowodów i usunięcia wszelkich \'uzasadnionych wątpliwości\'.', 'uploads/posters/12angrymen.jpg', 1957, 'Sidney Lumet', 'Dramat', 0.00, '2025-11-05 14:56:22'),
-(12, 'Lista Schindlera', 'Oparta na faktach historia Oskara Schindlera, niemieckiego przemysłowca i członka NSDAP, który podczas II wojny światowej ratuje ponad tysiąc Żydów przed śmiercią w obozie koncentracyjnym. Zatrudniając ich w swojej fabryce emaliowanych naczyń w Krakowie, Schindler ryzykuje własnym życiem i majątkiem, aby ocalić jak najwięcej osób.', 'uploads/posters/schindlerslist.jpg', 1993, 'Steven Spielberg', 'Dramat', 3.00, '2025-11-05 14:56:22'),
-(13, 'Władca Pierścieni: Powrót Króla', 'Ostatnia część trylogii. Podczas gdy Aragorn jednoczy siły dobra, aby stoczyć ostateczną bitwę z armiami Saurona, hobbici Frodo i Sam kontynuują swoją desperacką misję do wnętrza Mordoru. Ich celem jest Góra Przeznaczenia – jedyne miejsce, w którym można zniszczyć Pierścień Władzy i pokonać Władcę Ciemności.', 'uploads/posters/rotk.jpg', 2003, 'Peter Jackson', 'Fantasy', 8.00, '2025-11-05 14:56:22'),
-(14, 'The Matrix', 'Haker komputerowy Neo odkrywa, że świat, który zna, jest jedynie zaawansowaną symulacją komputerową stworzoną przez maszyny. Dołącza do Morfeusza i grupy rebeliantów, aby walczyć o wolność ludzkości.', 'uploads/posters/matrix.jpg', 1999, 'Lana Wachowski, Lilly Wachowski', 'Sci-Fi', 1.00, '2025-11-05 15:17:08'),
-(15, 'Interstellar', 'W niedalekiej przyszłości Ziemia staje się niezdatna do życia. Były pilot NASA, Cooper, wyrusza w desperacką misję przez tunel czasoprzestrzenny, aby znaleźć nowy dom dla ludzkości, pozostawiając za sobą swoje dzieci.', 'uploads/posters/interstellar.jpg', 2014, 'Christopher Nolan', 'Sci-Fi', 1.00, '2025-11-05 15:17:08'),
-(16, 'Szeregowiec Ryan', 'Po brutalnym lądowaniu w Normandii podczas II wojny światowej, kapitan John Miller otrzymuje rozkaz poprowadzenia swojego oddziału za linię wroga. Ich misją jest odnalezienie i bezpieczne sprowadzenie do domu szeregowca Jamesa Ryana, którego trzej bracia zginęli już na froncie.', 'uploads/posters/savingprivateryan.jpg', 1998, 'Steven Spielberg', 'Wojenny', 0.00, '2025-11-05 15:17:08'),
-(17, 'Chłopcy z ferajny', 'Oparta na faktach historia Henry\'ego Hilla, który od najmłodszych lat wspina się po szczeblach mafijnej kariery w Nowym Jorku. Film ukazuje brutalną rzeczywistość, bogactwo i ostateczny upadek życia w zorganizowanej przestępczości.', 'uploads/posters/goodfellas.jpg', 1990, 'Martin Scorsese', 'Dramat', 3.00, '2025-11-05 15:17:08'),
-(18, 'Król Lew', 'Młody lew, Simba, następca tronu Lwiej Ziemi, zostaje oszukany przez swojego podstępnego wuja, Skazę, i ucieka na wygnanie. Z pomocą przyjaciół, Timona i Pumby, Simba musi dorosnąć i wrócić, by odzyskać swoje prawowite miejsce w \'kręgu życia\'.', 'uploads/posters/lionking.jpg', 1994, 'Roger Allers, Rob Minkoff', 'Animacja', 1.00, '2025-11-05 15:17:08'),
-(19, 'Lśnienie', 'Pisarz Jack Torrance przyjmuje posadę zimowego stróża w odcięto od świata hotelu Overlook. Zabiera ze sobą żonę i syna, ale złowroga siła obecna w hotelu oraz przerażająca izolacja powoli doprowadzają go do obłędu.', 'uploads/posters/shining.jpg', 1980, 'Stanley Kubrick', 'Horror', 1.00, '2025-11-05 15:17:08'),
-(20, 'Łowca androidów', 'W dystopijnym Los Angeles 2019 roku, detektyw Rick Deckard, znany jako \'łowca androidów\', zostaje zmuszony do powrotu ze emerytury. Jego zadaniem jest wytropienie i \'eliminowanie\' grupy zbiegłych, zaawansowanych replikantów, którzy przybyli na Ziemię.', 'uploads/posters/bladerunner.jpg', 1982, 'Ridley Scott', 'Sci-Fi', 1.00, '2025-11-05 15:17:08'),
-(21, 'Amelia', 'Młoda, ekscentryczna kelnerka z paryskiej dzielnicy Montmartre, Amelia Poulain, postanawia w sekrecie pomagać ludziom wokół siebie i naprawiać ich życia. W trakcie tej misji odkrywa miłość w najmniej oczekiwanym momencie.', 'uploads/posters/amelie.jpg', 2001, 'Jean-Pierre Jeunet', 'Komedia', 1.00, '2025-11-05 15:17:08'),
-(22, 'Casablanca', 'Cyniczny amerykański emigrant, Rick Blaine, prowadzi popularny klub w kontrolowanej przez Francję Vichy Casablance podczas II wojny światowej. Niespodziewanie w jego życiu ponownie pojawia się dawna miłość, Ilsa Lund, która wraz z mężem, przywódcą ruchu oporu, desperacko potrzebuje jego pomocy w ucieczce do Ameryki.', 'uploads/posters/casablanca.jpg', 1942, 'Michael Curtiz', 'Dramat', 3.00, '2025-11-05 15:17:08'),
-(23, 'Poszukiwacze zaginionej Arki', 'Nieustraszony archeolog i poszukiwacz przygód, Indiana Jones, zostaje wynajęty przez rząd USA, aby odnaleźć legendarną Arkę Przymierza. Musi zdążyć, zanim potężny artefakt wpadnie w ręce nazistów, którzy chcą wykorzystać jego moc do zdobycia władzy nad światem.', 'uploads/posters/raiders.jpg', 1981, 'Steven Spielberg', 'Przygodowy', 0.00, '2025-11-05 15:17:08'),
-(24, 'Transformers: Początek', 'Animowany film opowiada o przyjaźni między Optimusem Prime a Megatronem, która przerodziła się we wrogość, oraz o początkach wojny między Autobotami a Deceptikonami.', 'uploads/posters/6918cabbe7ac6_transformers-one.jpg', 2024, 'Josh Cooley', 'Animacja', 3.00, '2025-11-15 18:47:23');
+CREATE TABLE `achievements` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `icon_url` varchar(255) NOT NULL,
+  `trigger_action` varchar(50) NOT NULL,
+  `trigger_threshold` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `achievements`
+--
+
+INSERT INTO `achievements` (`id`, `name`, `description`, `icon_url`, `trigger_action`, `trigger_threshold`) VALUES
+(1, 'Pierwsza Ocena', 'Oceniono pierwszy film.', 'uploads/achievements/icon1.png', 'rate_movie', 1),
+(2, 'Recenzent', 'Napisano pierwszą recenzję.', 'uploads/achievements/icon2.png', 'write_review', 1),
+(3, 'Krytyk', 'Napisano 10 recenzji.', 'uploads/achievements/icon3.png', 'write_review', 10),
+(4, 'Kolekcjoner', 'Dodano 5 filmów do listy \"Chcę obejrzeć\".', 'uploads/achievements/icon4.png', 'add_to_watchlist', 5),
+(5, 'Fanatyk', 'Dodano 5 filmów do ulubionych.', 'uploads/achievements/icon5.png', 'add_to_favorites', 5);
 
 -- --------------------------------------------------------
+
 --
 -- Struktura tabeli dla tabeli `directors`
 --
@@ -62,6 +57,36 @@ CREATE TABLE `directors` (
   `director_id` int(11) NOT NULL,
   `full_name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `directors`
+--
+
+INSERT INTO `directors` (`director_id`, `full_name`) VALUES
+(3, 'Bong Joon Ho'),
+(1, 'Christopher Nolan'),
+(2, 'Denis Villeneuve'),
+(7, 'Francis Ford Coppola'),
+(6, 'Frank Darabont'),
+(9, 'Hayao Miyazaki'),
+(20, 'Jean-Pierre Jeunet'),
+(24, 'Jon M. Chu'),
+(22, 'Josh Cooley'),
+(13, 'Lana Wachowski'),
+(14, 'Lilly Wachowski'),
+(15, 'Martin Scorsese'),
+(21, 'Michael Curtiz'),
+(12, 'Peter Jackson'),
+(8, 'Quentin Tarantino'),
+(19, 'Ridley Scott'),
+(17, 'Rob Minkoff'),
+(5, 'Robert Zemeckis'),
+(16, 'Roger Allers'),
+(23, 'Ruben Fleischer'),
+(10, 'Sidney Lumet'),
+(18, 'Stanley Kubrick'),
+(11, 'Steven Spielberg'),
+(4, 'Todd Phillips');
 
 -- --------------------------------------------------------
 
@@ -76,6 +101,14 @@ CREATE TABLE `followers` (
   `followed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `followers`
+--
+
+INSERT INTO `followers` (`id`, `follower_id`, `followed_id`, `followed_at`) VALUES
+(1, 4, 5, '2025-11-18 19:47:54'),
+(2, 4, 2, '2025-11-18 19:47:56');
+
 -- --------------------------------------------------------
 
 --
@@ -86,6 +119,22 @@ CREATE TABLE `genres` (
   `genre_id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `genres`
+--
+
+INSERT INTO `genres` (`genre_id`, `name`) VALUES
+(4, 'Animacja'),
+(3, 'Dramat'),
+(5, 'Fantasy'),
+(7, 'Horror'),
+(8, 'Komedia'),
+(11, 'Musical'),
+(9, 'Przygodowy'),
+(1, 'Sci-Fi'),
+(2, 'Thriller'),
+(6, 'Wojenny');
 
 -- --------------------------------------------------------
 
@@ -103,6 +152,37 @@ CREATE TABLE `movies` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `movies`
+--
+
+INSERT INTO `movies` (`id`, `title`, `description`, `poster_url`, `release_year`, `popularity`, `created_at`) VALUES
+(1, 'Incepcja', 'Złodziej, który kradnie informacje, wchodząc do snów swoich ofiar, otrzymuje ostatnie zadanie: zaszczepić myśl w umyśle celu.', 'uploads/posters/inception.jpg', 2010, 14.00, '2025-10-28 15:39:34'),
+(2, 'Diuna: Część druga', 'Paul Atryda jednoczy się z Chani i Fremenami, szukając zemsty na spiskowcach, którzy zniszczyli jego rodzinę.', 'uploads/posters/dune-part-two.jpg', 2024, 1.00, '2025-10-28 15:39:34'),
+(3, 'Parasite', 'Czteroosobowa rodzina bezrobotnych postanawia odmienić swój los, wplątując się w życie zamożnej rodziny Parków.', 'uploads/posters/parasite.jpg', 2019, 5.00, '2025-10-28 15:39:34'),
+(4, 'Joker', 'W Gotham City chory psychicznie komik Arthur Fleck zostaje zepchnięty na margines. Jego życie to ciąg niefortunnych zdarzeń, które prowadzą go na ścieżkę zbrodni.', 'uploads/posters/joker.jpg', 2019, 6.00, '2025-10-28 15:39:34'),
+(5, 'Forrest Gump', 'Historia życia prostolinijnego Forresta Gumpa, który mimo niskiego ilorazu inteligencji bierze udział w najważniejszych wydarzeniach w historii USA.', 'uploads/posters/forrest-gump.jpg', 1994, 3.00, '2025-10-28 15:39:34'),
+(6, 'Skazani na Shawshank', 'Adaptacja opowiadania Stephena Kinga. Niesłusznie skazany na dożywocie bankier, Andy Dufresne, stara się przetrwać w więzieniu, zachowując nadzieję.', 'uploads/posters/shawshank-redemption.jpg', 1994, 0.00, '2025-10-28 15:39:34'),
+(7, 'Ojciec Chrzestny', 'Starzejący się patriarcha potężnej, nowojorskiej rodziny mafijnej, Vito Corleone, postanawia przekazać kontrolę nad swoim imperium. Kiedy jego najmłodszy syn, Michael, początkowo niechętny rodzinie, zostaje wciągnięty w brutalny świat przestępczości i zdrady, musi przejąć rolę ojca i stać się nowym, bezwzględnym Donem.', 'uploads/posters/godfather.jpg', 1972, 3.00, '2025-11-05 14:56:22'),
+(8, 'Pulp Fiction', 'Losy dwóch płatnych morderców, żony ich szefa, boksera, który miał przegrać walkę, oraz pary drobnych rabusiów splatają się w serii nieprzewidywalnych, pełnych czarnego humoru i przemocy zdarzeń. Film opowiada trzy pozornie oddzielne historie, które łączą się w nieliniowej narracji.', 'uploads/posters/pulpfiction.jpg', 1994, 6.00, '2025-11-05 14:56:22'),
+(9, 'Mroczny Rycerz', 'Batman, z pomocą porucznika Gordona i prokuratora Harveya Denta, kontynuuje swoją misję oczyszczenia Gotham z przestępczości. Na ich drodze staje jednak nowy, genialny i anarchiczny złoczyńca znany jako Joker, który pogrąża miasto w chaosie i zmusza Mrocznego Rycerza do przekroczenia cienkiej granicy między bohaterem a mścicielem.', 'uploads/posters/darkknight.jpg', 2008, 3.00, '2025-11-05 14:56:22'),
+(10, 'Spirited Away: W krainie bogów', 'Dziesięcioletnia Chihiro, podczas przeprowadzki do nowego domu, trafia do magicznej krainy zamieszkanej przez duchy, bogów i potwory. Gdy jej rodzice zostają zamienieni w świnie przez potężną czarownicę Yubabę, dziewczynka musi podjąć pracę w niezwykłej łaźni dla bóstw, aby znaleźć sposób na uratowanie rodziny i powrót do świata ludzi.', 'uploads/posters/spiritedaway.jpg', 2001, 3.00, '2025-11-05 14:56:22'),
+(11, 'Dwunastu gniewnych ludzi', 'Dwunastu przysięgłych zbiera się w dusznym pokoju, aby zadecydować o winie lub niewinności młodego chłopaka oskarżonego o morderstwo ojca. Kiedy jedenastu z nich jest gotowych na szybki werdykt skazujący, jeden przysięgły (Juror nr 8) postanawia samotnie przeciwstawić się reszcie, argumentując, że sprawa wymaga głębszej analizy dowodów i usunięcia wszelkich \'uzasadnionych wątpliwości\'.', 'uploads/posters/12angrymen.jpg', 1957, 0.00, '2025-11-05 14:56:22'),
+(12, 'Lista Schindlera', 'Oparta na faktach historia Oskara Schindlera, niemieckiego przemysłowca i członka NSDAP, który podczas II wojny światowej ratuje ponad tysiąc Żydów przed śmiercią w obozie koncentracyjnym. Zatrudniając ich w swojej fabryce emaliowanych naczyń w Krakowie, Schindler ryzykuje własnym życiem i majątkiem, aby ocalić jak najwięcej osób.', 'uploads/posters/schindlerslist.jpg', 1993, 4.00, '2025-11-05 14:56:22'),
+(13, 'Władca Pierścieni: Powrót Króla', 'Ostatnia część trylogii. Podczas gdy Aragorn jednoczy siły dobra, aby stoczyć ostateczną bitwę z armiami Saurona, hobbici Frodo i Sam kontynuują swoją desperacką misję do wnętrza Mordoru. Ich celem jest Góra Przeznaczenia – jedyne miejsce, w którym można zniszczyć Pierścień Władzy i pokonać Władcę Ciemności.', 'uploads/posters/rotk.jpg', 2003, 9.00, '2025-11-05 14:56:22'),
+(14, 'The Matrix', 'Haker komputerowy Neo odkrywa, że świat, który zna, jest jedynie zaawansowaną symulacją komputerową stworzoną przez maszyny. Dołącza do Morfeusza i grupy rebeliantów, aby walczyć o wolność ludzkości.', 'uploads/posters/matrix.jpg', 1999, 1.00, '2025-11-05 15:17:08'),
+(15, 'Interstellar', 'W niedalekiej przyszłości Ziemia staje się niezdatna do życia. Były pilot NASA, Cooper, wyrusza w desperacką misję przez tunel czasoprzestrzenny, aby znaleźć nowy dom dla ludzkości, pozostawiając za sobą swoje dzieci.', 'uploads/posters/interstellar.jpg', 2014, 1.00, '2025-11-05 15:17:08'),
+(16, 'Szeregowiec Ryan', 'Po brutalnym lądowaniu w Normandii podczas II wojny światowej, kapitan John Miller otrzymuje rozkaz poprowadzenia swojego oddziału za linię wroga. Ich misją jest odnalezienie i bezpieczne sprowadzenie do domu szeregowca Jamesa Ryana, którego trzej bracia zginęli już na froncie.', 'uploads/posters/savingprivateryan.jpg', 1998, 0.00, '2025-11-05 15:17:08'),
+(17, 'Chłopcy z ferajny', 'Oparta na faktach historia Henry\'ego Hilla, który od najmłodszych lat wspina się po szczeblach mafijnej kariery w Nowym Jorku. Film ukazuje brutalną rzeczywistość, bogactwo i ostateczny upadek życia w zorganizowanej przestępczości.', 'uploads/posters/goodfellas.jpg', 1990, 3.00, '2025-11-05 15:17:08'),
+(18, 'Król Lew', 'Młody lew, Simba, następca tronu Lwiej Ziemi, zostaje oszukany przez swojego podstępnego wuja, Skazę, i ucieka na wygnanie. Z pomocą przyjaciół, Timona i Pumby, Simba musi dorosnąć i wrócić, by odzyskać swoje prawowite miejsce w \'kręgu życia\'.', 'uploads/posters/lionking.jpg', 1994, 1.00, '2025-11-05 15:17:08'),
+(19, 'Lśnienie', 'Pisarz Jack Torrance przyjmuje posadę zimowego stróża w odcięto od świata hotelu Overlook. Zabiera ze sobą żonę i syna, ale złowroga siła obecna w hotelu oraz przerażająca izolacja powoli doprowadzają go do obłędu.', 'uploads/posters/shining.jpg', 1980, 1.00, '2025-11-05 15:17:08'),
+(20, 'Łowca androidów', 'W dystopijnym Los Angeles 2019 roku, detektyw Rick Deckard, znany jako \'łowca androidów\', zostaje zmuszony do powrotu ze emerytury. Jego zadaniem jest wytropienie i \'eliminowanie\' grupy zbiegłych, zaawansowanych replikantów, którzy przybyli na Ziemię.', 'uploads/posters/bladerunner.jpg', 1982, 1.00, '2025-11-05 15:17:08'),
+(21, 'Amelia', 'Młoda, ekscentryczna kelnerka z paryskiej dzielnicy Montmartre, Amelia Poulain, postanawia w sekrecie pomagać ludziom wokół siebie i naprawiać ich życia. W trakcie tej misji odkrywa miłość w najmniej oczekiwanym momencie.', 'uploads/posters/amelie.jpg', 2001, 1.00, '2025-11-05 15:17:08'),
+(22, 'Casablanca', 'Cyniczny amerykański emigrant, Rick Blaine, prowadzi popularny klub w kontrolowanej przez Francję Vichy Casablance podczas II wojny światowej. Niespodziewanie w jego życiu ponownie pojawia się dawna miłość, Ilsa Lund, która wraz z mężem, przywódcą ruchu oporu, desperacko potrzebuje jego pomocy w ucieczce do Ameryki.', 'uploads/posters/casablanca.jpg', 1942, 3.00, '2025-11-05 15:17:08'),
+(23, 'Poszukiwacze zaginionej Arki', 'Nieustraszony archeolog i poszukiwacz przygód, Indiana Jones, zostaje wynajęty przez rząd USA, aby odnaleźć legendarną Arkę Przymierza. Musi zdążyć, zanim potężny artefakt wpadnie w ręce nazistów, którzy chcą wykorzystać jego moc do zdobycia władzy nad światem.', 'uploads/posters/raiders.jpg', 1981, 0.00, '2025-11-05 15:17:08'),
+(24, 'Transformers: Początek', 'Animowany film opowiada o przyjaźni między Optimusem Prime a Megatronem, która przerodziła się we wrogość, oraz o początkach wojny między Autobotami a Deceptikonami.', 'uploads/posters/6918cabbe7ac6_transformers-one.jpg', 2024, 3.00, '2025-11-15 18:47:23'),
+(25, 'Wicked', 'Kraina Oz. Elphaba, odrzucona przez ludzi ze względu na zielony kolor skóry, niespodziewanie nawiązuje na Uniwersytecie Shiz przyjaźń z popularną studentką Galindą.', 'uploads/posters/691de2616a95c_8151360.png', 2024, 0.00, '2025-11-19 15:29:37');
+
 -- --------------------------------------------------------
 
 --
@@ -114,6 +194,40 @@ CREATE TABLE `movie_directors` (
   `director_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `movie_directors`
+--
+
+INSERT INTO `movie_directors` (`movie_id`, `director_id`) VALUES
+(0, 23),
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 1),
+(10, 9),
+(11, 10),
+(12, 11),
+(13, 12),
+(14, 13),
+(14, 14),
+(15, 1),
+(16, 11),
+(17, 15),
+(18, 16),
+(18, 17),
+(19, 18),
+(20, 19),
+(21, 20),
+(22, 21),
+(23, 11),
+(24, 22),
+(25, 24);
+
 -- --------------------------------------------------------
 
 --
@@ -124,6 +238,41 @@ CREATE TABLE `movie_genres` (
   `movie_id` int(11) NOT NULL,
   `genre_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `movie_genres`
+--
+
+INSERT INTO `movie_genres` (`movie_id`, `genre_id`) VALUES
+(0, 2),
+(1, 1),
+(2, 1),
+(3, 2),
+(4, 2),
+(5, 3),
+(6, 3),
+(7, 3),
+(8, 3),
+(9, 3),
+(10, 4),
+(11, 3),
+(12, 3),
+(13, 5),
+(14, 1),
+(15, 1),
+(16, 6),
+(17, 3),
+(18, 4),
+(19, 7),
+(20, 1),
+(21, 8),
+(22, 3),
+(23, 9),
+(24, 4),
+(25, 9),
+(25, 11);
+
+-- --------------------------------------------------------
 
 --
 -- Struktura tabeli dla tabeli `ratings`
@@ -169,6 +318,13 @@ CREATE TABLE `review_likes` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `review_likes`
+--
+
+INSERT INTO `review_likes` (`id`, `user_id`, `rating_id`, `created_at`) VALUES
+(11, 4, 227, '2025-11-19 15:32:40');
+
 -- --------------------------------------------------------
 
 --
@@ -196,7 +352,28 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `phone_numbe
 (2, '21321', 'h@d', '$2y$10$zQBeV3/L.elHQRuUuaBlXuYVo5XbFeeDeBj0Rhl96xFCr/zmb7jSO', 'user', NULL, '2025-10-13 15:05:17', NULL, NULL),
 (3, 'Wiktor Zawadzki', 'wiktorzawadzki@gmail.com', '$2y$10$ICUDLAA64J2gxf6xD1hpMOTFjtiAb3SR2SIsRMRxFlauivbtqFNRy', 'user', NULL, '2025-10-13 15:31:49', NULL, NULL),
 (4, 'test', 'test@gmail.com', '$2y$10$xJK3MsM6KGD9T41BpfUx7uZgACl21lKtmhBS/V9yRxf1WcWTNr/ie', 'admin', NULL, '2025-11-09 21:08:29', 'uploads/posters/pulpfiction.jpg', NULL),
-(5, 'krytyk', 'krytyk@gmail.com', '$2y$10$Wt3p2pXDc3dXfclktWINFOIN6WedupYmF.U7i5cqGMurgjMJ6tPbu', 'critic', NULL, '2025-11-15 19:47:08', 'uploads/posters/casablanca.jpg', 'Naczelny fan polskich produkcji filmowych.');
+(5, 'krytyk', 'krytyk@gmail.com', '$2y$10$Wt3p2pXDc3dXfclktWINFOIN6WedupYmF.U7i5cqGMurgjMJ6tPbu', 'critic', NULL, '2025-11-15 19:47:08', 'uploads/posters/casablanca.jpg', 'Naczelny fan polskich produkcji filmowych.'),
+(6, 'sesja', 'sesja@gmail.com', '$2y$10$.UxFoN1nAaL3Ikvo6bB4MO3aWatXhHl/cU009Hw8eunDSJY2L9cfK', 'user', NULL, '2025-11-19 15:53:24', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `user_achievements`
+--
+
+CREATE TABLE `user_achievements` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `achievement_id` int(11) NOT NULL,
+  `earned_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_achievements`
+--
+
+INSERT INTO `user_achievements` (`id`, `user_id`, `achievement_id`, `earned_at`) VALUES
+(1, 4, 4, '2025-11-19 14:53:31');
 
 -- --------------------------------------------------------
 
@@ -237,11 +414,24 @@ INSERT INTO `user_movie_lists` (`id`, `user_id`, `movie_id`, `list_type`, `creat
 (22, 4, 18, 'watchlist', '2025-11-15 18:00:32'),
 (23, 4, 5, 'watchlist', '2025-11-15 18:00:55'),
 (25, 4, 24, 'favorite', '2025-11-15 18:54:19'),
-(26, 5, 13, 'favorite', '2025-11-15 20:06:00');
+(26, 5, 13, 'favorite', '2025-11-15 20:06:00'),
+(27, 4, 12, 'watchlist', '2025-11-19 14:53:31'),
+(28, 4, 4, 'watchlist', '2025-11-19 14:53:33'),
+(29, 4, 8, 'watchlist', '2025-11-19 14:53:36'),
+(30, 4, 13, 'watchlist', '2025-11-19 14:53:37'),
+(31, 4, 9, 'watchlist', '2025-11-19 14:53:42'),
+(32, 6, 8, 'favorite', '2025-11-19 15:53:36'),
+(33, 6, 12, 'watchlist', '2025-11-19 15:53:36');
 
 --
 -- Indeksy dla zrzutów tabel
 --
+
+--
+-- Indeksy dla tabeli `achievements`
+--
+ALTER TABLE `achievements`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeksy dla tabeli `directors`
@@ -279,19 +469,19 @@ ALTER TABLE `movie_directors`
   ADD KEY `fk_md_director` (`director_id`);
 
 --
+-- Indeksy dla tabeli `movie_genres`
+--
+ALTER TABLE `movie_genres`
+  ADD PRIMARY KEY (`movie_id`,`genre_id`),
+  ADD KEY `fk_mg_genre` (`genre_id`);
+
+--
 -- Indeksy dla tabeli `ratings`
 --
 ALTER TABLE `ratings`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `user_movie_rating` (`user_id`,`movie_id`),
   ADD KEY `movie_id` (`movie_id`);
-
---
--- Indeksy dla tabeli `movie_genres`
---
-ALTER TABLE `movie_genres`
-  ADD PRIMARY KEY (`movie_id`,`genre_id`),
-  ADD KEY `fk_mg_genre` (`genre_id`);
 
 --
 -- Indeksy dla tabeli `review_likes`
@@ -310,6 +500,14 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indeksy dla tabeli `user_achievements`
+--
+ALTER TABLE `user_achievements`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_achievement_unique` (`user_id`,`achievement_id`),
+  ADD KEY `achievement_id` (`achievement_id`);
+
+--
 -- Indeksy dla tabeli `user_movie_lists`
 --
 ALTER TABLE `user_movie_lists`
@@ -322,34 +520,34 @@ ALTER TABLE `user_movie_lists`
 --
 
 --
+-- AUTO_INCREMENT for table `achievements`
+--
+ALTER TABLE `achievements`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `directors`
 --
 ALTER TABLE `directors`
-  MODIFY `director_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `director_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `followers`
 --
 ALTER TABLE `followers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `genres`
 --
 ALTER TABLE `genres`
-  MODIFY `genre_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `genre_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `movies`
 --
 ALTER TABLE `movies`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
-
---
--- AUTO_INCREMENT for table `review_likes`
---
-ALTER TABLE `review_likes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `ratings`
@@ -358,16 +556,28 @@ ALTER TABLE `ratings`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=248;
 
 --
+-- AUTO_INCREMENT for table `review_likes`
+--
+ALTER TABLE `review_likes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `user_achievements`
+--
+ALTER TABLE `user_achievements`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user_movie_lists`
 --
 ALTER TABLE `user_movie_lists`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- Constraints for dumped tables
@@ -384,22 +594,19 @@ ALTER TABLE `followers`
 -- Constraints for table `movie_directors`
 --
 ALTER TABLE `movie_directors`
-  ADD CONSTRAINT `fk_md_director` FOREIGN KEY (`director_id`) REFERENCES `directors` (`director_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_md_movie` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_md_director` FOREIGN KEY (`director_id`) REFERENCES `directors` (`director_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `movie_genres`
 --
 ALTER TABLE `movie_genres`
-  ADD CONSTRAINT `fk_mg_genre` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`genre_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_mg_movie` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_mg_genre` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`genre_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `ratings`
 --
 ALTER TABLE `ratings`
-  ADD CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `review_likes`
@@ -409,11 +616,17 @@ ALTER TABLE `review_likes`
   ADD CONSTRAINT `review_likes_ibfk_2` FOREIGN KEY (`rating_id`) REFERENCES `ratings` (`id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `user_achievements`
+--
+ALTER TABLE `user_achievements`
+  ADD CONSTRAINT `user_achievements_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_achievements_ibfk_2` FOREIGN KEY (`achievement_id`) REFERENCES `achievements` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `user_movie_lists`
 --
 ALTER TABLE `user_movie_lists`
-  ADD CONSTRAINT `user_movie_lists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `user_movie_lists_ibfk_2` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `user_movie_lists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
