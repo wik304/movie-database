@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['update_critic_descrip
         }
     }
 }
-$sql = "SELECT username, email, phone_number, role, created_at, profile_banner_url, critic_description FROM users WHERE id = ?";
+$sql = "SELECT username, email, phone_number, role, created_at, profile_banner_url, critic_description, avatar_url FROM users WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $profile_user_id);
 $stmt->execute();
@@ -139,7 +139,7 @@ while ($row = $result_favorites->fetch_assoc()) {
 $stmt_favorites->close();
 
 $following_users = [];
-$sql_following = "SELECT u.id, u.username
+$sql_following = "SELECT u.id, u.username, u.avatar_url
                   FROM followers f
                   JOIN users u ON f.followed_id = u.id
                   WHERE f.follower_id = ?
@@ -179,7 +179,11 @@ $conn->close();
             if (!empty($update_description_error)) echo '<div class="inline-message error">' . htmlspecialchars($update_description_error) . '</div>';
             ?>
             <?php if ($logged_in_user_id === $profile_user_id): ?>
-                <button id="change-banner-btn" class="change-banner-btn"><i class="fa-solid fa-image"></i> <span>Zmień tło</span></button>
+                <div class="btns-div-avatar">
+                    <button id="change-avatar-btn" class="change-banner-btn"><i class="fa-solid fa-camera"></i> <span>Zmień awatar</span></button>
+                    <input type="file" id="avatar-upload-input" style="display: none;" accept="image/*">
+                    <button id="change-banner-btn" class="change-banner-btn"><i class="fa-solid fa-image"></i> <span>Zmień tło</span></button>
+                </div>
                 <div class="profile-banner-overlay">
                     <a href="settings.php" class="settings-link" title="Ustawienia konta">
                         <i class="fa-solid fa-cog"></i>
@@ -189,14 +193,25 @@ $conn->close();
             <div class="main-content">
                 <div class="form-container">
                     <div class="avatar-card">
-                        <img src="uploads/avatar-default.png" alt="Avatar użytkownika" class="profile-avatar">
+                        <div class="avatar-container" id="avatar-container-clickable">
+                            <img src="<?php echo htmlspecialchars($user['avatar_url'] ?? 'uploads/avatar-default.png'); ?>" alt="Avatar użytkownika" class="profile-avatar" id="profile-avatar-img">
+                        </div>
                         <div class="avatar-info">
                             <div class="profile-username"><?php echo htmlspecialchars($user['username']); ?></div>
                             <?php if ($user['role'] === 'critic'): ?>
                                 <div id="critic-description-wrapper" class="critic-description-wrapper">
-                                    <span id="critic-description-text" class="critic-description-text">
-                                        <?php echo !empty($user['critic_description']) ? nl2br(htmlspecialchars($user['critic_description'])) : 'Kliknij, aby dodać opis...'; ?>
-                                    </span>
+                                    <?php
+                                    $is_own_profile = ($logged_in_user_id === $profile_user_id);
+                                    $description_text = '';
+                                    if (!empty($user['critic_description'])) {
+                                        $description_text = nl2br(htmlspecialchars($user['critic_description']));
+                                    } elseif ($is_own_profile) {
+                                        $description_text = 'Kliknij, aby dodać opis...';
+                                    }
+                                    ?>
+                                    <?php if (!empty($description_text)): ?>
+                                        <span id="critic-description-text" class="critic-description-text"><?php echo $description_text; ?></span>
+                                    <?php endif; ?>
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -225,12 +240,16 @@ $conn->close();
 <div style="max-width: 1200px; margin: 0 auto;">
     <div style="margin: 16px;">
         <?php if (!empty($achievements)): ?>
-            <section class="profile-content-section" style="max-width: 800px; margin-bottom: 2rem;">
+            <section class="profile-content-section">
                 <h3>Osiągnięcia</h3>
-                <div class="achievements-grid">
+                <div class="achievements-list">
                     <?php foreach ($achievements as $achievement): ?>
-                        <div class="achievement-item" title="<?php echo htmlspecialchars($achievement['name']); ?>: <?php echo htmlspecialchars($achievement['description']); ?>">
+                        <div class="achievement-item">
                             <img src="<?php echo htmlspecialchars($achievement['icon_url']); ?>" alt="<?php echo htmlspecialchars($achievement['name']); ?>">
+                            <div class="achievement-info">
+                                <h4><?php echo htmlspecialchars($achievement['name']); ?></h4>
+                                <p><?php echo htmlspecialchars($achievement['description']); ?></p>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -335,7 +354,7 @@ $conn->close();
                     <?php foreach ($following_users as $followed_user): ?>
                         <div class="user-grid-item">
                             <a href="profile.php?id=<?php echo $followed_user['id']; ?>">
-                                <img src="uploads/avatar-default.png" alt="Avatar użytkownika <?php echo htmlspecialchars($followed_user['username']); ?>">
+                                <img src="<?php echo htmlspecialchars($followed_user['avatar_url'] ?? 'uploads/avatar-default.png'); ?>" alt="Avatar użytkownika <?php echo htmlspecialchars($followed_user['username']); ?>">
                                 <h4><?php echo htmlspecialchars($followed_user['username']); ?></h4>
                             </a>
                         </div>
@@ -347,36 +366,36 @@ $conn->close();
 </div>
 
 <?php if ($logged_in_user_id === $profile_user_id && $user['role'] === 'critic'): ?>
-<div id="description-modal-overlay" class="modal-overlay">
-    <div class="modal-box description-modal">
-        <h3 style="margin-bottom: 1rem;">Edytuj swój opis</h3>
-        <form id="critic-description-form" action="profile.php?id=<?php echo $profile_user_id; ?>" method="POST">
-            <textarea name="critic_description" class="critic-description-textarea" placeholder="Napisz kilka słów o sobie, swoich zainteresowaniach filmowych..." maxlength="100"><?php echo htmlspecialchars($user['critic_description'] ?? ''); ?></textarea>
-            <div class="form-actions">
-                <button type="submit" name="update_critic_description" class="submit-btn">Zapisz</button>
-            </div>
-        </form>
+    <div id="description-modal-overlay" class="modal-overlay">
+        <div class="modal-box description-modal">
+            <h3 style="margin-bottom: 1rem;">Edytuj swój opis</h3>
+            <form id="critic-description-form" action="profile.php?id=<?php echo $profile_user_id; ?>" method="POST">
+                <textarea name="critic_description" class="critic-description-textarea" placeholder="Napisz kilka słów o sobie, swoich zainteresowaniach filmowych..." maxlength="100"><?php echo htmlspecialchars($user['critic_description'] ?? ''); ?></textarea>
+                <div class="form-actions">
+                    <button type="submit" name="update_critic_description" class="submit-btn">Zapisz</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 <?php endif; ?>
 
 <?php if ($logged_in_user_id === $profile_user_id): ?>
-<div id="banner-modal-overlay" class="modal-overlay">
-    <div class="modal-box">
-        <div class="modal-header">
-            <div class="modal-title-group">
-                <h3>Wybierz tło</h3>
-                <button id="remove-banner-btn" class="remove-banner-icon <?php if (empty($user['profile_banner_url'])) echo 'hidden'; ?>" title="Usuń tło">&times;</button>
+    <div id="banner-modal-overlay" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h3>Wybierz tło</h3>
+                    <button id="remove-banner-btn" class="remove-banner-icon <?php if (empty($user['profile_banner_url'])) echo 'hidden'; ?>" title="Usuń tło">&times;</button>
+                </div>
+                <div class="modal-search-container">
+                    <input type="search" id="modal-search-input" placeholder="Szukaj">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
             </div>
-            <div class="modal-search-container">
-                <input type="search" id="modal-search-input" placeholder="Szukaj">
-                <i class="fa-solid fa-magnifying-glass"></i>
+            <div id="posters-grid" class="posters-grid">
             </div>
-        </div>
-        <div id="posters-grid" class="posters-grid">
         </div>
     </div>
-</div>
 <?php endif; ?>
 
 <?php
@@ -384,147 +403,197 @@ include 'footer.php';
 ?>
 
 <script>
-<?php if ($logged_in_user_id === $profile_user_id): ?>
-document.addEventListener('DOMContentLoaded', function() {
-    const allMovies = <?php echo json_encode($all_movies_for_banner); ?>;
-    const changeBannerBtn = document.getElementById('change-banner-btn');
-    const modalOverlay = document.getElementById('banner-modal-overlay');
-    const profileBannerBg = document.getElementById('profile-banner-background');
-    const removeBannerBtn = document.getElementById('remove-banner-btn');
-    const searchInput = document.getElementById('modal-search-input');
-    const postersGrid = document.getElementById('posters-grid');
-    
-    changeBannerBtn.addEventListener('click', () => {
-        modalOverlay.classList.add('visible');
-    });
+    <?php if ($logged_in_user_id === $profile_user_id): ?>
+        document.addEventListener('DOMContentLoaded', function() {
+            const allMovies = <?php echo json_encode($all_movies_for_banner); ?>;
+            const changeAvatarBtn = document.getElementById('change-avatar-btn');
+            const avatarUploadInput = document.getElementById('avatar-upload-input');
+            const profileAvatarImg = document.getElementById('profile-avatar-img');
+            const avatarContainer = document.getElementById('avatar-container-clickable');
 
-    modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay) {
-            modalOverlay.classList.remove('visible');
-        }
-    });
+            if (changeAvatarBtn && avatarUploadInput) {
+                changeAvatarBtn.addEventListener('click', () => {
+                    avatarUploadInput.click();
+                });
+            }
 
-    function renderPosters(moviesToShow) {
-        postersGrid.innerHTML = '';
-        const moviesToDisplay = moviesToShow.slice(0, 12);
+            if (avatarContainer && avatarUploadInput) {
+                avatarContainer.addEventListener('click', () => {
+                    avatarUploadInput.click();
+                });
+ 
+                avatarUploadInput.addEventListener('change', () => {
+                    const file = avatarUploadInput.files[0];
+                    if (file) {
+                        const formData = new FormData();
+                        formData.append('avatar', file);
 
-        if (moviesToDisplay.length === 0) {
-            postersGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">Brak pasujących filmów.</p>';
-            return;
-        }
-
-        moviesToDisplay.forEach(movie => {
-            const posterDiv = document.createElement('div');
-            posterDiv.className = 'poster-item';
-            posterDiv.dataset.posterUrl = movie.poster_url;
-
-            const posterImg = document.createElement('img');
-            posterImg.src = movie.poster_url;
-            posterImg.alt = `Plakat filmu ${movie.title}`;
-            
-            posterDiv.appendChild(posterImg);
-            postersGrid.appendChild(posterDiv);
-        });
-    }
-
-    searchInput.addEventListener('input', function() {
-        const query = this.value.toLowerCase().trim();
-        if (query.length > 0) {
-            const filteredMovies = allMovies.filter(movie => 
-                movie.title.toLowerCase().includes(query)
-            );
-            renderPosters(filteredMovies);
-        } else {
-            renderPosters(allMovies);
-        }
-    });
-
-    postersGrid.addEventListener('click', function(e) {
-        const posterItem = e.target.closest('.poster-item');
-        if (posterItem) {
-            const posterUrl = posterItem.dataset.posterUrl;
-            updateBanner(posterUrl);
-        }
-    });
+                        fetch('update_avatar.php', {
+                                method: 'POST',
+                                body: formData
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    // Dodajemy timestamp, aby przeglądarka odświeżyła obrazek
+                                    profileAvatarImg.src = data.new_avatar_url + '?' + new Date().getTime();
+                                } else {
+                                    alert('Błąd: ' + data.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Błąd sieci:', error);
+                                alert('Wystąpił błąd sieciowy.');
+                            });
+                    }
+                });
+            }
 
 
-    removeBannerBtn.addEventListener('click', function() {
-        updateBanner('');
-    });
 
-    function updateBanner(url) {
-        profileBannerBg.style.backgroundImage = url ? `url('${url}')` : 'none';
 
-        const formData = new FormData();
-        formData.append('banner_url', url);
+            const changeBannerBtn = document.getElementById('change-banner-btn');
+            const modalOverlay = document.getElementById('banner-modal-overlay');
+            const profileBannerBg = document.getElementById('profile-banner-background');
+            const removeBannerBtn = document.getElementById('remove-banner-btn');
+            const searchInput = document.getElementById('modal-search-input');
+            const postersGrid = document.getElementById('posters-grid');
 
-        fetch('update_banner.php', { method: 'POST', body: formData })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status !== 'success') {
-                    console.error('Błąd aktualizacji tła:', data.message);
-                }
-                if (url) {
-                    removeBannerBtn.classList.remove('hidden');
-                } else {
-                    removeBannerBtn.classList.add('hidden');
+            changeBannerBtn.addEventListener('click', () => {
+                modalOverlay.classList.add('visible');
+            });
+
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    modalOverlay.classList.remove('visible');
                 }
             });
 
-        modalOverlay.classList.remove('visible');
-    }
+            function renderPosters(moviesToShow) {
+                postersGrid.innerHTML = '';
+                const moviesToDisplay = moviesToShow.slice(0, 12);
 
-    renderPosters(allMovies);
-});
-<?php endif; ?>
-
-<?php if ($logged_in_user_id === $profile_user_id && $user['role'] === 'critic'): ?>
-document.addEventListener('DOMContentLoaded', function() {
-    const descriptionText = document.getElementById('critic-description-text');
-    const modalOverlay = document.getElementById('description-modal-overlay');
-
-    descriptionText.addEventListener('click', () => {
-        modalOverlay.classList.add('visible');
-    });
-
-    modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay) {
-            modalOverlay.classList.remove('visible');
-        }
-    });
-});
-<?php endif; ?>
-
-document.addEventListener('DOMContentLoaded', function() {
-    const likeButtons = document.querySelectorAll('.like-btn');
-
-    likeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const ratingId = this.dataset.ratingId;
-            const likeCountSpan = this.querySelector('.like-count');
-
-            const formData = new FormData();
-            formData.append('rating_id', ratingId);
-
-            fetch('like_review.php', {
-                method: 'POST', body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    likeCountSpan.textContent = data.like_count;
-                    if (data.action === 'liked') {
-                        this.classList.add('liked');
-                    } else {
-                        this.classList.remove('liked');
-                    }
-                } else {
-                    alert(data.message || 'Wystąpił błąd.');
+                if (moviesToDisplay.length === 0) {
+                    postersGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">Brak pasujących filmów.</p>';
+                    return;
                 }
-            }).catch(error => console.error('Błąd sieci:', error));
+
+                moviesToDisplay.forEach(movie => {
+                    const posterDiv = document.createElement('div');
+                    posterDiv.className = 'poster-item';
+                    posterDiv.dataset.posterUrl = movie.poster_url;
+
+                    const posterImg = document.createElement('img');
+                    posterImg.src = movie.poster_url;
+                    posterImg.alt = `Plakat filmu ${movie.title}`;
+
+                    posterDiv.appendChild(posterImg);
+                    postersGrid.appendChild(posterDiv);
+                });
+            }
+
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase().trim();
+                if (query.length > 0) {
+                    const filteredMovies = allMovies.filter(movie =>
+                        movie.title.toLowerCase().includes(query)
+                    );
+                    renderPosters(filteredMovies);
+                } else {
+                    renderPosters(allMovies);
+                }
+            });
+
+            postersGrid.addEventListener('click', function(e) {
+                const posterItem = e.target.closest('.poster-item');
+                if (posterItem) {
+                    const posterUrl = posterItem.dataset.posterUrl;
+                    updateBanner(posterUrl);
+                }
+            });
+
+
+            removeBannerBtn.addEventListener('click', function() {
+                updateBanner('');
+            });
+
+            function updateBanner(url) {
+                profileBannerBg.style.backgroundImage = url ? `url('${url}')` : 'none';
+
+                const formData = new FormData();
+                formData.append('banner_url', url);
+
+                fetch('update_banner.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status !== 'success') {
+                            console.error('Błąd aktualizacji tła:', data.message);
+                        }
+                        if (url) {
+                            removeBannerBtn.classList.remove('hidden');
+                        } else {
+                            removeBannerBtn.classList.add('hidden');
+                        }
+                    });
+
+                modalOverlay.classList.remove('visible');
+            }
+
+            renderPosters(allMovies);
+        });
+    <?php endif; ?>
+
+    <?php if ($logged_in_user_id === $profile_user_id && $user['role'] === 'critic'): ?>
+        document.addEventListener('DOMContentLoaded', function() {
+            const descriptionText = document.getElementById('critic-description-text');
+            const modalOverlay = document.getElementById('description-modal-overlay');
+
+            descriptionText.addEventListener('click', () => {
+                modalOverlay.classList.add('visible');
+            });
+
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    modalOverlay.classList.remove('visible');
+                }
+            });
+        });
+    <?php endif; ?>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const likeButtons = document.querySelectorAll('.like-btn');
+
+        likeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const ratingId = this.dataset.ratingId;
+                const likeCountSpan = this.querySelector('.like-count');
+
+                const formData = new FormData();
+                formData.append('rating_id', ratingId);
+
+                fetch('like_review.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            likeCountSpan.textContent = data.like_count;
+                            if (data.action === 'liked') {
+                                this.classList.add('liked');
+                            } else {
+                                this.classList.remove('liked');
+                            }
+                        } else {
+                            alert(data.message || 'Wystąpił błąd.');
+                        }
+                    }).catch(error => console.error('Błąd sieci:', error));
+            });
         });
     });
-});
 </script>
 
 </body>

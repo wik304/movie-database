@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $user_id) {
 
 
 $all_reviews = [];
-$sql_all_reviews = "SELECT r.id AS rating_id, r.rating, r.comment, r.created_at, u.username,
+$sql_all_reviews = "SELECT r.id AS rating_id, r.rating, r.comment, r.created_at, u.id as user_id, u.username, u.avatar_url,
                            (SELECT COUNT(*) FROM user_movie_lists uml WHERE uml.user_id = r.user_id AND uml.movie_id = ? AND uml.list_type = 'favorite') AS is_favorite,
                            (SELECT COUNT(*) FROM review_likes rl WHERE rl.rating_id = r.id) AS like_count,
                            (SELECT COUNT(*) FROM review_likes rl WHERE rl.rating_id = r.id AND rl.user_id = ?) AS user_liked
@@ -128,15 +128,25 @@ if ($result_all_reviews->num_rows > 0) {
 }
 $stmt_all_reviews->close();
 
+$total_critic_reviews_count = 0;
+$sql_count_critic = "SELECT COUNT(*) as total FROM ratings r WHERE r.movie_id = ? AND r.rating_type = 'critic' AND r.comment IS NOT NULL AND r.comment != ''";
+$stmt_count_critic = $conn->prepare($sql_count_critic);
+$stmt_count_critic->bind_param("i", $movie_id);
+$stmt_count_critic->execute();
+$total_critic_reviews_count = $stmt_count_critic->get_result()->fetch_assoc()['total'] ?? 0;
+$stmt_count_critic->close();
+
 $critic_reviews = [];
-$sql_critic_reviews = "SELECT r.rating, r.comment, u.username, u.id AS user_id, u.critic_description,
-                              (SELECT COUNT(*) FROM followers WHERE follower_id = ? AND followed_id = u.id) as is_followed
+$sql_critic_reviews = "SELECT r.id as rating_id, r.rating, r.comment, u.username, u.id AS user_id, u.critic_description, u.avatar_url,
+                              (SELECT COUNT(*) FROM followers WHERE follower_id = ? AND followed_id = u.id) as is_followed,
+                              (SELECT COUNT(*) FROM review_likes rl WHERE rl.rating_id = r.id) AS like_count,
+                              (SELECT COUNT(*) FROM review_likes rl WHERE rl.rating_id = r.id AND rl.user_id = ?) AS user_liked
                        FROM ratings r
                        JOIN users u ON r.user_id = u.id
                        WHERE r.movie_id = ? AND r.rating_type = 'critic' AND r.comment IS NOT NULL AND r.comment != ''
                        ORDER BY r.created_at DESC LIMIT 5";
 $stmt_critic_reviews = $conn->prepare($sql_critic_reviews);
-$stmt_critic_reviews->bind_param("ii", $user_id, $movie_id);
+$stmt_critic_reviews->bind_param("iii", $user_id, $user_id, $movie_id); // user_id jest tu dwa razy dla spójności zapytań
 $stmt_critic_reviews->execute();
 $result_critic_reviews = $stmt_critic_reviews->get_result();
 if ($result_critic_reviews->num_rows > 0) {
@@ -338,6 +348,8 @@ if ($user_id) {
         width: 48px;
         height: 48px;
         border-radius: 6px;
+        object-fit: cover;
+        border-radius: 50%;
         object-fit: cover;
         flex: 0 0 48px;
         margin-right: 0.75rem
@@ -706,6 +718,46 @@ if ($user_id) {
         padding-top: 5rem;
     }
 </style>
+<style>
+    .see-all-reviews-slide {
+        display: flex;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        height: 100%;
+        padding: 1rem 2rem;
+    }
+
+    .see-all-content {
+        font-size: 1rem;
+        color: #0ccb4a;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .see-all-content h3 {
+        color: #2c2c2c;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .see-all-content p {
+        color: #555;
+    }
+
+    .see-all-button {
+        background-color: #0ccb4a;
+        color: #2c2c2c;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+    }
+
+</style>
 
 <main>
     <div class="hero-wrapper">
@@ -745,7 +797,7 @@ if ($user_id) {
         <div class="plot-box">
             <div class="box-header">
                 <div class="box-header-left">
-                    <img src="uploads/avatar-default.png" alt="avatar" class="box-avatar">
+                    <img src="<?php echo htmlspecialchars($_SESSION['user_avatar_url'] ?? 'uploads/avatar-default.png'); ?>" alt="avatar" class="box-avatar">
                     <span class="box-rate-text">Oceń film</span>
                     <button type="button" class="remove-rating-btn <?php if (!($user_id && $user_current_rating > 0)) echo 'hidden'; ?>" id="remove-rating-btn" title="Usuń ocenę">&times;</button>
                 </div>
@@ -789,8 +841,12 @@ if ($user_id) {
                         <?php foreach ($reviews_to_display as $review): ?>
                             <div class="review-item">
                                 <div class="review-header">
-                                    <img src="uploads/avatar-default.png" alt="Avatar" class="review-avatar">
-                                    <span class="review-author"><?php echo htmlspecialchars($review['username']); ?></span>
+                                    <a href="profile.php?id=<?php echo $review['user_id']; ?>" class="review-author-link">
+                                        <img src="<?php echo htmlspecialchars($review['avatar_url'] ?? 'uploads/avatar-default.png'); ?>" alt="Avatar" class="review-avatar">
+                                    </a>
+                                    <a href="profile.php?id=<?php echo $review['user_id']; ?>" class="review-author-link">
+                                        <span class="review-author"><?php echo htmlspecialchars($review['username']); ?></span>
+                                    </a>
                                     <?php if ($review['rating'] > 0): ?>
                                         <div class="review-rating-dot">&middot;</div>
                                         <div class="review-rating-simple">
@@ -852,7 +908,7 @@ if ($user_id) {
                                     <div class="simple-slider-item">
                                         <div class="critic-review-info-box">
                                             <a href="profile.php?id=<?php echo $critic_review['user_id']; ?>">
-                                                <img src="uploads/avatar-default.png" alt="critic-avatar" class="critic-box-avatar">
+                                                <img src="<?php echo htmlspecialchars($critic_review['avatar_url'] ?? 'uploads/avatar-default.png'); ?>" alt="critic-avatar" class="critic-box-avatar">
                                             </a>
                                             <div class="critic-review-content">
                                                 <div class="critic-review-author-name-box">
@@ -876,7 +932,7 @@ if ($user_id) {
                                             </div>
                                         </div>
                                         <div class="critic-review-rating-box">
-                                            <span class="critic-review-star-number"><?php echo number_format((float)$critic_review['rating'], 1); ?></span>
+                                            <span class="critic-review-star-number"><?php echo number_format((float)$critic_review['rating'], 0); ?></span>
                                             <div>
                                                 <?php for ($i = 1; $i <= 10; $i++): ?>
                                                     <?php if ($i <= (int)$critic_review['rating']): ?>
@@ -890,8 +946,26 @@ if ($user_id) {
                                         <div class="critic-review-description">
                                             <span><?php echo htmlspecialchars($critic_review['comment']); ?></span>
                                         </div>
+                                        <div class="review-actions">
+                                            <div class="like-btn <?php if ($critic_review['user_liked']) echo 'liked'; ?>" data-rating-id="<?php echo $critic_review['rating_id']; ?>" role="button" tabindex="0">
+                                                <span class="like-text">Lubię to!</span>
+                                                <span class="like-count"><?php echo $critic_review['like_count']; ?></span>
+                                                <i class="fa-solid fa-thumbs-up"></i>
+                                            </div>
+                                        </div>
                                     </div>
                                 <?php endforeach; ?>
+                                <?php if ($total_critic_reviews_count > 5): ?>
+                                    <div class="simple-slider-item">
+                                        <div class="see-all-reviews-slide">
+                                            <div class="see-all-content">
+                                                <h3 style="text-align: center;">Zobacz wszystkie recenzje</h3>
+                                                <p style="text-align: center;">Dostępnych jest <?php echo $total_critic_reviews_count; ?> recenzji krytyków dla tego filmu.</p>
+                                                <a href="all_reviews.php?movie_id=<?php echo $movie_id; ?>&type=critic" class="see-all-button">Zobacz wszystkie</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
                             <?php else: ?>
                                 <p style="color: #555;">Brak recenzji krytyków dla tego filmu.</p>
                             <?php endif; ?>

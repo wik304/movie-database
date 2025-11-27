@@ -65,6 +65,11 @@
     text-decoration: none;
 }
 
+.review-author-link {
+    height: 24px;
+    text-decoration: none;
+}
+
 .review-rating-simple {
     display: flex;
     align-items: center;
@@ -211,7 +216,7 @@
 
 .simple-slider-item {
     flex: 0 0 300px;
-    height: 240px;
+    height: 254px;
     background-color: none;
     border-radius: 4px;
     text-align: left;
@@ -261,6 +266,8 @@
 .simple-slider-item img {
     width: 3rem;
     height: 3rem;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .critic-review-author,

@@ -2,6 +2,23 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+// Synchronizacja awatara w sesji z bazą danych przy każdym ładowaniu strony
+if (isset($_SESSION['user_id'])) {
+    // Ta zmienna zapobiega wielokrotnemu odpytywaniu bazy danych w ramach jednego żądania
+    if (!isset($_SESSION['avatar_checked_at']) || (time() - $_SESSION['avatar_checked_at'] > 60)) {
+        include_once 'db_connect.php'; // Użyj include_once, aby uniknąć ponownego dołączania
+        $sql_avatar = "SELECT avatar_url FROM users WHERE id = ?";
+        $stmt_avatar = $conn->prepare($sql_avatar);
+        if ($stmt_avatar) {
+            $stmt_avatar->bind_param("i", $_SESSION['user_id']);
+            $stmt_avatar->execute();
+            $_SESSION['user_avatar_url'] = $stmt_avatar->get_result()->fetch_assoc()['avatar_url'] ?? null;
+            $stmt_avatar->close();
+        }
+        $_SESSION['avatar_checked_at'] = time(); // Zapisz czas ostatniego sprawdzenia
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -71,6 +88,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <div class="search-container">
                 <form action="search_results.php" method="GET" class="search-form">
                     <input type="text" name="query" id="search-input" class="search-input" placeholder="Szukaj" aria-label="Szukaj" autocomplete="off" required>
+                    <input type="hidden" name="search" value="1">
                     <div id="autocomplete-results" class="autocomplete-results"></div>
                     <button type="submit" class="search-button" aria-label="Szukaj">
                         <i class="fa-solid fa-magnifying-glass"></i>

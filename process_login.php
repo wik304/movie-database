@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    $sql = "SELECT id, username, password, role FROM users WHERE email = ?";
+    $sql = "SELECT id, username, password, role, avatar_url FROM users WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['username'] = $row['username'];
             $_SESSION['user_role'] = $row['role'];
+            $_SESSION['user_avatar_url'] = $row['avatar_url'];
 
             // Przenieś filmy z sesji gościa do bazy danych
             transfer_session_lists_to_db($row['id'], $conn);
